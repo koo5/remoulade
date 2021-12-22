@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import os
 import time
 from contextlib import contextmanager
 from queue import Empty, Full, LifoQueue
@@ -81,7 +82,7 @@ class RabbitmqBroker(Broker):
         if dead_queue_max_length is not None and dead_queue_max_length <= 0:
             raise ValueError("dead_queue_max_length must be strictly above 0")
 
-        self.url = url or ""
+        self.url = url or os.getenv("REMOULADE_RABBITMQ_URL") or ""
         self.confirm_delivery = confirm_delivery
         self.max_priority = max_priority
         self.dead_queue_max_length = dead_queue_max_length
