@@ -64,7 +64,8 @@ class RedisBackend(CancelBackend):
             with self.client.pipeline() as pipe:
                 [pipe.zscore(self.key, key) for key in [message_id, composition_id] if key]
                 results = pipe.execute()
-            return any(result is not None for result in results)
+            result = any(result is not None for result in results)
+            print(f'is_canceled({self}, {message_id} {composition_id}) -> {result}')
         except redis.exceptions.RedisError:
             return False  # if connection to redis fail for any reason, consider the message as not cancelled
 

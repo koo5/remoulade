@@ -201,6 +201,7 @@ class Broker:
                 raise
             except Exception:
                 self.logger.critical("Unexpected failure in before_%s.", signal, exc_info=True)
+                raise
 
     def emit_after(self, signal, *args, **kwargs):
         for middleware in reversed(self.middleware):
@@ -208,6 +209,7 @@ class Broker:
                 getattr(middleware, "after_" + signal)(self, *args, **kwargs)
             except Exception:
                 self.logger.critical("Unexpected failure in after_%s.", signal, exc_info=True)
+                raise
 
     def get_result_backend(self) -> ResultBackend:
         """Get the ResultBackend associated with the broker
@@ -256,6 +258,7 @@ class Broker:
             if middleware is not None:
                 return middleware.backend
             else:
+#                raise Exception('bla')
                 raise exception
         except KeyError as e:
             raise ValueError("invalid backend name") from e
