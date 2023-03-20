@@ -91,6 +91,7 @@ def cancel_message(message_id):
 @app.route("/messages/requeue/<message_id>", methods=["POST"])
 @marshal_with(ResponseSchema)
 def requeue_message(message_id):
+    print('/messages/requeue/!')
     broker = get_broker()
     backend = broker.get_state_backend()
     state = backend.get_state(message_id)
@@ -155,7 +156,7 @@ def get_options():
     return {"options": list(broker.actor_options)}
 
 
-@app.errorhandler(RemouladeError)
+# @app.errorhandler(RemouladeError)
 def remoulade_exception(e):
     return {"error": str(e)}, 500
 
