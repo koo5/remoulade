@@ -109,7 +109,7 @@ def requeue_message(message_id):
 
 @app.route("/messages/result/<message_id>")
 @marshal_with(ResponseSchema)
-def get_results(message_id, max_size:int = 1e4):
+def get_results(message_id, max_size:int = 9999999999):
     from ..message import get_encoder
     try:
         result = Result(message_id=message_id).get()
