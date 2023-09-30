@@ -276,6 +276,11 @@ class _ConsumerThread(Thread):
                 self.delay_queue = PriorityQueue()
                 if not restart_consumer:
                     self.stop()
+
+                # remoulade just kept trying to reconnect in an endless loop without any sleep after the limit was reached
+                import time
+                time.sleep(5)
+
             except Exception:
                 self.logger.critical("Consumer encountered an unexpected error.", exc_info=True)
                 # Avoid leaving any open file descriptors around when
@@ -475,6 +480,7 @@ class _WorkerThread(Thread):
                     exc_info=True,
                     extra=extra,
                 )
+                raise
 
         finally:
             # NOTE: There is no race here as any message that was
