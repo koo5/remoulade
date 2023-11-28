@@ -124,6 +124,8 @@ def get_results(message_id, max_size:int = 9999999999):
         return {"error": "no result backend"}
     except (UnicodeDecodeError, TypeError):
         return {"error": "non serializable result"}
+    except remoulade.results.errors.ErrorStored as e:
+        return {"result": str(e)}
 
 
 @app.route("/messages", methods=["POST"])
